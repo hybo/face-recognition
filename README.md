@@ -3,7 +3,7 @@
 ```
 PHP >= 7.0
 ```
-# Installation
+# ~~Installation~~(暂不支持)
 
 ```shell
 $ composer require "hybo/face-recognition"
