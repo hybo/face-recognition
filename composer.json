@@ -1,0 +1,22 @@
+{
+    "name": "hybo/face-recognition",
+    "description": "face recognition",
+    "autoload": {
+        "psr-4": {
+            "FaceRecognition\\": "src/"
+        }
+    }, 
+    "require": {
+        "php": ">=7.0",
+        "guzzlehttp/guzzle": "^6.3",
+        "symfony/http-foundation": "^3.4",
+        "symfony/cache": "^3.4"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "hybo",
+            "email": "hybolong@qq.com"
+        }
+    ]
+}
