@@ -8,6 +8,7 @@ use FaceRecognition\TencentYoutuInterface;
 
 class TencentYoutuProvider extends AbstractProvider  implements TencentYoutuInterface
 {
+    private $baseUrl = 'http://api.youtu.qq.com';
     private $detectUrl = 'http://api.youtu.qq.com/youtu/api/detectface';
     private $compareUrl = 'http://api.youtu.qq.com/youtu/api/facecompare';
     private $searchUrl = 'http://api.youtu.qq.com/youtu/api/multifaceidentify';

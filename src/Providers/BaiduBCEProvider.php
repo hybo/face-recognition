@@ -8,6 +8,7 @@ use FaceRecognition\BaiduBCEInterface;
 
 class BaiduBCEProvider extends AbstractProvider implements BaiduBCEInterface
 {
+    private $baseUrl = 'https://aip.baidubce.com';
     private $detectUrl = 'https://aip.baidubce.com/rest/2.0/face/v3/detect';
     private $compareUrl = 'https://aip.baidubce.com/rest/2.0/face/v3/match';
     private $searchUrl = 'https://aip.baidubce.com/rest/2.0/face/v3/search';

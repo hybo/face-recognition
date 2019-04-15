@@ -3,12 +3,12 @@
 namespace FaceRecognition\Providers;
 
 use ErrorException;
-use FaceRecognition\User;
 use InvalidArgumentException;
 use FaceRecognition\FPPInterface;
 
 class FPPProvider extends AbstractProvider  implements FPPInterface
 {
+    private $baseUrl = 'https://api-cn.faceplusplus.com';
     private $detectUrl = 'https://api-cn.faceplusplus.com/facepp/v3/detect';
     private $compareUrl = 'https://api-cn.faceplusplus.com/facepp/v3/compare';
     private $searchUrl = 'https://api-cn.faceplusplus.com/facepp/v3/search';
