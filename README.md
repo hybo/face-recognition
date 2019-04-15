@@ -1,9 +1,9 @@
 # Requirement
 
 ```
-PHP >= 7.0
+PHP >= 7.1
 ```
-# ~~Installation~~(暂不支持)
+# Installation
 
 ```shell
 $ composer require "hybo/face-recognition"
