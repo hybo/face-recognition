@@ -28,7 +28,8 @@ class TencentYoutuProvider extends AbstractProvider  implements TencentYoutuInte
             'mode' => $isBigFace,
         ];
 
-        return $this->request($this->detectUrl, $data);
+        $res = $this->request($this->detectUrl, $data);
+        return $res['face'][0];
     }
 
     public function compare($urlA, $urlB)

@@ -30,7 +30,8 @@ class BaiduBCEProvider extends AbstractProvider implements BaiduBCEInterface
             $data = array_merge($data, $options);
         }
 
-        return $this->request($this->detectUrl, $data);
+        $res = $this->request($this->detectUrl, $data);
+        return $res['face_list'][0];
     }
 
     public function compare(array $images)
@@ -103,7 +104,10 @@ class BaiduBCEProvider extends AbstractProvider implements BaiduBCEInterface
 
         $res = $this->request($this->userGetUrl, $data);
 
-        return $res;
+        $user = $res['user_list'][0];
+        $user['user_id'] = $userId;
+
+        return $user;
     }
 
     public function deleteFace($userId, $groupId, $faceToken)
@@ -163,6 +167,6 @@ class BaiduBCEProvider extends AbstractProvider implements BaiduBCEInterface
                 throw new InvalidArgumentException("{$res['error_code']}[{$res['error_msg']}]");
             }
         }
-        return $res;
+        return $res['result'];
     }
 }

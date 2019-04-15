@@ -4,7 +4,10 @@ namespace FaceRecognition\Adapters;
 
 use ErrorException;
 use FaceRecognition\BaiduBCEInterface;
+use FaceRecognition\Face;
+use FaceRecognition\FaceAttributes;
 use FaceRecognition\FaceRecognitionInterface;
+use FaceRecognition\User;
 
 class BaiduBCEAdapter implements FaceRecognitionInterface
 {
@@ -21,7 +24,9 @@ class BaiduBCEAdapter implements FaceRecognitionInterface
      */
     public function detect($image)
     {
-        return $this->baiduBCE->detect($image, 'URL');
+        $face = $this->baiduBCE->detect($image, 'URL');
+
+        return $this->mapFaceToObject($face)->merge(['original' => $face]);
     }
 
     /**
@@ -79,7 +84,9 @@ class BaiduBCEAdapter implements FaceRecognitionInterface
      */
     public function getUser(string $userId, string $groupId = '')
     {
-        return $this->baiduBCE->getUser($userId, $groupId);
+        $user =  $this->baiduBCE->getUser($userId, $groupId);
+
+        return $this->mapUserToObject($user)->merge(['original' => $user]);
     }
 
     /**
@@ -96,5 +103,29 @@ class BaiduBCEAdapter implements FaceRecognitionInterface
     public function deleteFace(string $userId, string $faceId, string $groupId = '')
     {
         return $this->baiduBCE->deleteFace($userId, $groupId, $faceId);
+    }
+
+    protected function mapUserToObject(array $user)
+    {
+        return new User([
+            'id' => $user['user_id'],
+            'group_id' => $user['group_id'],
+            'info' => $user['user_info'],
+        ]);
+    }
+
+    protected function mapFaceToObject(array $face)
+    {
+        return new Face([
+            'id' => $face['face_token'],
+            'age' => $face['age'],
+            'gender' => FaceAttributes::formatGender($face['gender']['type']),
+            'expression' => FaceAttributes::formatExpression($face['expression']['type']),
+            'emotion' => FaceAttributes::formatEmotion($face['emotion']['type']),
+            'beauty' => $face['beauty'],
+            'glasses' => FaceAttributes::formatGlasses($face['glasses']['type']),
+            'race' => FaceAttributes::formatRace($face['race']['type']),
+            'angle' => $face['angle'],
+        ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace FaceRecognition\Providers;
 
 use ErrorException;
+use FaceRecognition\User;
 use InvalidArgumentException;
 use FaceRecognition\FPPInterface;
 
@@ -29,7 +30,8 @@ class FPPProvider extends AbstractProvider  implements FPPInterface
         ];
         $data = $this->buildFormData($data);
 
-        return $this->request($this->detectUrl, $data);
+        $res = $this->request($this->detectUrl, $data);
+        return $res['faces'][0];
     }
 
     public function compare($imageUrl1, $imageUrl2)

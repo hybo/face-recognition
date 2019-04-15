@@ -2,8 +2,11 @@
 
 namespace FaceRecognition\Adapters;
 
+use FaceRecognition\Face;
+use FaceRecognition\FaceAttributes;
 use FaceRecognition\FaceRecognitionInterface;
 use FaceRecognition\TencentYoutuInterface;
+use FaceRecognition\User;
 
 class TencentYoutuAdapter implements FaceRecognitionInterface
 {
@@ -20,7 +23,8 @@ class TencentYoutuAdapter implements FaceRecognitionInterface
      */
     public function detect($image)
     {
-        return $this->tencentYoutu->detect($image);
+        $face = $this->tencentYoutu->detect($image);
+        return $this->mapFaceToObject($face);
     }
 
     /**
@@ -68,7 +72,8 @@ class TencentYoutuAdapter implements FaceRecognitionInterface
      */
     public function getUser(string $userId, string $groupId = '')
     {
-        return $this->tencentYoutu->getPerson($userId);
+        $user = $this->tencentYoutu->getPerson($userId);
+        return $this->mapUserToObject($user)->merge(['original' => $user]);
     }
 
     /**
@@ -85,5 +90,31 @@ class TencentYoutuAdapter implements FaceRecognitionInterface
     public function deleteFace(string $userId, string $faceId, string $groupId = '')
     {
         return $this->tencentYoutu->deleteFace($userId, [$faceId]);
+    }
+
+    protected function mapUserToObject(array $user)
+    {
+        return new User([
+            'id' => $user['person_id'],
+            'group_id' => $user['group_ids'][0],
+            'info' => $user['tag'],
+        ]);
+    }
+
+    protected function mapFaceToObject(array $face)
+    {
+        return new Face([
+            'id' => $face['face_id'],
+            'age' => $face['age'],
+            'gender' => FaceAttributes::formatGender($face['gender'], [0, 100]),
+            'expression' => FaceAttributes::formatExpression($face['expression'], [0, 50, 100]),
+            'beauty' => $face['beauty'],
+            'glasses' => FaceAttributes::formatGlasses($face['glasses'], [0, 1, 2]),
+            'angle' => [
+                'yaw' => $face['yaw'],
+                'pitch' => $face['pitch'],
+                'roll' => $face['roll'],
+            ],
+        ]);
     }
 }
